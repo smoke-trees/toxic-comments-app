@@ -2,8 +2,10 @@ package dev.smoketrees.toxiccommentstflite
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     private val labels =
         listOf("Toxic", "Severe Toxic", "Obscene", "Threat", "Insult", "Identity Hate")
+    private val thresholds = listOf(0.70, 0.30, 0.30, 0.15, 0.40, 0.20)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,17 +53,36 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun updateResultUI(res: FloatArray) {
+        var isAboveThreshold = false
+
         val sortedRes = res.sorted().reversed()
         val labelList = mutableListOf<String>()
+        val thresholdList = mutableListOf<Double>()
         for (i in 0..2) {
             val index = res.indexOf(sortedRes[i])
             labelList.add(labels[index])
+            thresholdList.add(thresholds[index])
         }
-        val labelViews = listOf(firstLabel, secondLabel, thirdLabel)
-        val valueViews = listOf(firstValue, secondValue, thirdValue)
+
         for (i in 0..2) {
-            labelViews[i].text = labelList[i]
-            valueViews[i].text = sortedRes[i].toString()
+            if (sortedRes[i] > thresholdList[i]) {
+                isAboveThreshold = true
+                break
+            }
+        }
+
+        if (isAboveThreshold) {
+            resultLayout.visibility = View.VISIBLE
+            cleanTextLayout.visibility = View.GONE
+            val labelViews = listOf(firstLabel, secondLabel, thirdLabel)
+            val valueViews = listOf(firstValue, secondValue, thirdValue)
+            for (i in 0..2) {
+                labelViews[i].text = labelList[i]
+                valueViews[i].text = sortedRes[i].toString()
+            }
+        } else {
+            cleanTextLayout.visibility = View.VISIBLE
+            resultLayout.visibility = View.GONE
         }
     }
 
