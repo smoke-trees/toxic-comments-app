@@ -71,6 +71,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
+        val percentSortedRes = sortedRes.map { it * 100 }
+
         if (isAboveThreshold) {
             resultLayout.visibility = View.VISIBLE
             cleanTextLayout.visibility = View.GONE
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             val valueViews = listOf(firstValue, secondValue, thirdValue)
             for (i in 0..2) {
                 labelViews[i].text = labelList[i]
-                valueViews[i].text = sortedRes[i].toString()
+                valueViews[i].text = percentSortedRes[i].toString() + " %"
             }
         } else {
             cleanTextLayout.visibility = View.VISIBLE
