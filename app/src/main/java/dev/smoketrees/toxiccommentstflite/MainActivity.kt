@@ -1,7 +1,11 @@
 package dev.smoketrees.toxiccommentstflite
 
+import android.content.Context
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +43,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
+        predictButton.isHapticFeedbackEnabled = true
         predictButton.setOnClickListener {
+            predictButton.performHapticFeedback(
+                HapticFeedbackConstants.VIRTUAL_KEY,
+                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+            )
+
             if (inputText.text.isEmpty()) {
                 Toast.makeText(this, "Text cant be empty", Toast.LENGTH_SHORT).show()
             } else {

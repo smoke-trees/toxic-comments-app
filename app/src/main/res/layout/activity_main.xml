@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textColor="#006400"
+                    android:textColor="#8B0000"
                     android:layout_marginStart="24dp" />
 
                 <TextView
@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textColor="#006400"
+                    android:textColor="#8B0000"
                     android:layout_marginStart="24dp" />
 
                 <TextView
@@ -163,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textColor="#006400"
+                    android:textColor="#8B0000"
                     android:layout_marginStart="24dp"
                     android:layout_marginBottom="24dp" />
 
