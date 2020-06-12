@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = mJob + Dispatchers.Main
 
+    private val labels =
+        listOf("Toxic", "Severe Toxic", "Obscene", "Threat", "Insult", "Identity Hate")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,16 +42,25 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             } else {
                 predictButton.isEnabled = false
                 val text = inputText.text.toString().toLowerCase(Locale.ROOT).trim()
-                predictButton.isEnabled = true
                 val resArr = classifier.classifyText(text)
-                resultText.text = "Result:\n" +
-                        "\nToxic: ${resArr[0]}" +
-                        "\nSevere Toxic: ${resArr[1]}" +
-                        "\nObscene: ${resArr[2]}" +
-                        "\nThreat: ${resArr[3]}" +
-                        "\nInsult: ${resArr[4]}" +
-                        "\nIdentity Hate: ${resArr[5]}"
+                predictButton.isEnabled = true
+                updateResultUI(resArr)
             }
+        }
+    }
+
+    private fun updateResultUI(res: FloatArray) {
+        val sortedRes = res.sorted().reversed()
+        val labelList = mutableListOf<String>()
+        for (i in 0..2) {
+            val index = res.indexOf(sortedRes[i])
+            labelList.add(labels[index])
+        }
+        val labelViews = listOf(firstLabel, secondLabel, thirdLabel)
+        val valueViews = listOf(firstValue, secondValue, thirdValue)
+        for (i in 0..2) {
+            labelViews[i].text = labelList[i]
+            valueViews[i].text = sortedRes[i].toString()
         }
     }
 
