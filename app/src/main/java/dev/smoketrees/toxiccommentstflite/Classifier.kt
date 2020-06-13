@@ -75,9 +75,11 @@ class Classifier (private val context: Context) {
     fun init() {
         val jsonObject = JSONObject(loadJSONFromAsset() ?: "")
         val iterator: Iterator<String> = jsonObject.keys()
-        while (iterator.hasNext()) {
+        var counter = 0
+        while (iterator.hasNext() and (counter < MAX_FEATURE_LENGTH)) {
             val key = iterator.next()
             wordDict[key] = jsonObject.getInt(key)
+            counter++
         }
         Log.d("esh", "Json Dict loaded")
     }
@@ -95,6 +97,7 @@ class Classifier (private val context: Context) {
         private const val MODEL_FILE = "model.tflite"
         private const val DICT_FILE = "dict.json"
         private const val MAX_LEN = 200
+        private const val MAX_FEATURE_LENGTH = 20000
     }
 
     init {
